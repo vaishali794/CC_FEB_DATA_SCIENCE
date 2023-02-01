@@ -1,0 +1,26 @@
+<?php
+
+if (isset($_FILES['pdf_file'])) {
+    $pdf = $_FILES['pdf_file']['tmp_name'];
+
+    if (!empty($pdf)) {
+        // Include Composer's autoloader
+        require 'vendor/autoload.php';
+
+        // Create an instance of the class that converts PDFs to Word documents
+        $pdfConverter = new \Smalot\PdfToText\PdfToText($pdf);
+
+        // Get the text content of the PDF
+        $wordContent = $pdfConverter->getText();
+
+        // Save the text content to a Word document
+        file_put_contents('converted.docx', $wordContent);
+    }
+}
+
+?>
+
+<form action="" method="post" enctype="multipart/form-data">
+    <input type="file" name="pdf_file" />
+    <input type="submit" value="Convert to Word" />
+</form>
